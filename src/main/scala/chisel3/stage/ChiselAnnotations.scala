@@ -115,8 +115,6 @@ case class ChiselCircuitAnnotation(circuit: Circuit)
 
   override def toBytes: Option[Iterable[Byte]] = Some(OldEmitter.emit(circuit).map(_.toByte))
 
-  override def replacements(file: File): Option[AnnotationSeq] = None
-
   override def filename(annotations: AnnotationSeq): File = {
     val sopts = view[StageOptions](annotations)
     val copts = view[ChiselOptions](annotations)
