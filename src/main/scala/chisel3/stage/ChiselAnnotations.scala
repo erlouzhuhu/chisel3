@@ -109,17 +109,13 @@ case class ChiselCircuitAnnotation(circuit: Circuit)
    */
   override lazy val hashCode: Int = circuit.hashCode
 
-  protected def baseFileName: String = circuit.name
+  protected def baseFileName(annotations: AnnotationSeq): String = {
+    view[ChiselOptions](annotations).outputFile.getOrElse(circuit.name)
+  }
 
   protected def suffix: Option[String] = Some(".fir")
 
   override def toBytes: Option[Iterable[Byte]] = Some(OldEmitter.emit(circuit).map(_.toByte))
-
-  override def filename(annotations: AnnotationSeq): File = {
-    val sopts = view[StageOptions](annotations)
-    val copts = view[ChiselOptions](annotations)
-    new File(sopts.getBuildFileName(copts.outputFile.getOrElse(baseFileName), suffix))
-  }
 
 }
 
